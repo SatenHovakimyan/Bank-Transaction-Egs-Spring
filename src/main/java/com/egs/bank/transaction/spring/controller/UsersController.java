@@ -1,20 +1,11 @@
 package com.egs.bank.transaction.spring.controller;
 
-import com.egs.bank.transaction.spring.encrypt.PasswordEncryption;
 import com.egs.bank.transaction.spring.entity.Users;
-import com.egs.bank.transaction.spring.service.UserService;
+import com.egs.bank.transaction.spring.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.time.LocalDate;
 
 
 @RestController
@@ -45,11 +36,15 @@ public class UsersController {
     }
     @GetMapping(value = "/login", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public Users login(
+    public ResponseEntity<Users> login(
             @RequestBody
                     Users user) {
 
-        return userService.login(user);
+        if(userService.login(user) != null) {
+            return new ResponseEntity<>(userService.login(user), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
     }
 
 }

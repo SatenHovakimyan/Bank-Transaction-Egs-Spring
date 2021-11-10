@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -51,9 +52,8 @@ public class Users {
     @OneToMany(mappedBy = "user")
     private Set<BankAccounts> bankAccounts;
 
-    @OneToOne
-    @JoinColumn(name = "transaction_id")
-    private Transactions transaction;
+    @OneToMany(mappedBy = "user")
+    private List<Transactions> transactions;
 
     public Users(
             String firstName, String lastName, Role role, String username, String password,

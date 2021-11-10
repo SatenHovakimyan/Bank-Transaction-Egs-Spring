@@ -1,4 +1,4 @@
-package com.egs.bank.transaction.spring.service;
+package com.egs.bank.transaction.spring.service.impl;
 
 import com.egs.bank.transaction.spring.encrypt.PasswordEncryption;
 import com.egs.bank.transaction.spring.entity.Users;
@@ -36,7 +36,11 @@ public class UserService {
     public int register(Users user) {
         Users registeredUser = new Users();
         registeredUser = user;
-        registeredUser.setRole(Role.USER);
+        if (user.getUsername().equals("admin")) {
+            registeredUser.setRole(Role.ADMIN);
+        } else {
+            registeredUser.setRole(Role.USER);
+        }
         registeredUser.setCreated_data(LocalDate.now());
 
         IvParameterSpec iv = PasswordEncryption.generateIv();
@@ -54,7 +58,10 @@ public class UserService {
             e.printStackTrace();
         }
 
-        registeredUser.setDateOfBirth(LocalDate.parse(user.getDateOfBirth().toString()));
+        if(registeredUser.getDateOfBirth() != null) {
+            registeredUser.setDateOfBirth(LocalDate.parse(user.getDateOfBirth().toString()));
+        }
+
         if (userRepository.findByUsername(user.getUsername()) == null &&
                 userRepository.findByEmail(user.getEmail()) == null) {
             userRepository.save(registeredUser);
@@ -85,6 +92,9 @@ public class UserService {
             return userRepository.findByUsername(user.getUsername());
         }
         return null;
-
     }
+
+
+
+
 }

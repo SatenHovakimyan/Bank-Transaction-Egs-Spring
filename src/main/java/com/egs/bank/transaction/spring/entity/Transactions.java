@@ -44,7 +44,8 @@ public class Transactions {
     @JoinColumn(name = "bank_account_id")
     private BankAccounts bankAccount;
 
-    @OneToOne(mappedBy = "transaction")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private Users user;
 
     public Transactions(
