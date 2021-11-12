@@ -55,4 +55,18 @@ public class PasswordEncryption {
                 .decode(cipherText));
         return new String(plainText);
     }
+
+    public static String convertSecretKeyToString(SecretKey secretKey) throws NoSuchAlgorithmException {
+        byte[] rawData = secretKey.getEncoded();
+        String encodedKey = Base64.getEncoder().encodeToString(rawData);
+        return encodedKey;
+    }
+
+    public static SecretKey convertStringToSecretKeyto(String encodedKey) {
+        byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
+        SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+        return originalKey;
+    }
+
+
 }

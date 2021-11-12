@@ -55,10 +55,12 @@ public class Users {
     @OneToMany(mappedBy = "user")
     private List<Transactions> transactions;
 
-    public Users(
-            String firstName, String lastName, Role role, String username, String password,
-            int age, LocalDate dateOfBirth, String email, LocalDate created_data,
-            Set<BankAccounts> bankAccounts) {
+    @Column(name = "logged_in_status")
+    private Boolean loggedInStatus;
+
+    public Users(String firstName, String lastName, Role role, String username, String password, int age,
+                 LocalDate dateOfBirth, String email, LocalDate created_data, Set<BankAccounts> bankAccounts,
+                 List<Transactions> transactions, Boolean loggedInStatus) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
@@ -69,5 +71,7 @@ public class Users {
         this.email = email;
         this.created_data = created_data;
         this.bankAccounts = bankAccounts;
+        this.transactions = transactions;
+        this.loggedInStatus = loggedInStatus;
     }
 }
