@@ -11,7 +11,7 @@ public enum TransactionType {
     },
     WITHDRAWAL(2) {
         public String toString() {
-            return "id: 2, type: DEPOSIT";
+            return "id: 2, type: WITHDRAWAL";
         }
     };
     private final int id;

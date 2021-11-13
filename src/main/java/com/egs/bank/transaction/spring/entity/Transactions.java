@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -23,22 +23,22 @@ public class Transactions {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Column(name = "transaction_type", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 
     @Column(name = "transaction_status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private TransactionStatus transactionStatus;
+    private TransactionStatus transactionStatus = TransactionStatus.NEW;
 
     @Column(name = "created_data")
-    private LocalDate createdData;
+    private LocalDateTime createdData;
 
-    @Column(name = "transaction_sum")
-    private Long transactionSum;
+    @Column(name = "transaction_amount")
+    private Long transactionAmount = 0L;
 
     @ManyToOne()
     @JoinColumn(name = "bank_account_id")
@@ -50,12 +50,12 @@ public class Transactions {
 
     public Transactions(
             TransactionType transactionType, TransactionStatus transactionStatus,
-            LocalDate createdData, Long transactionSum, BankAccounts bankAccount
+            LocalDateTime createdData, Long transactionAmount, BankAccounts bankAccount
     ) {
         this.transactionType = transactionType;
         this.transactionStatus = transactionStatus;
         this.createdData = createdData;
-        this.transactionSum = transactionSum;
+        this.transactionAmount = transactionAmount;
         this.bankAccount = bankAccount;
     }
 }

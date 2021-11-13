@@ -1,22 +1,27 @@
 package com.egs.bank.transaction.spring.controller;
 
+import com.egs.bank.transaction.spring.entity.Transactions;
 import com.egs.bank.transaction.spring.entity.Users;
+import com.egs.bank.transaction.spring.service.impl.TransactionService;
 import com.egs.bank.transaction.spring.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
 @RequestMapping("/users")
 public class UsersController {
     private final UserService userService;
+    private final TransactionService transactionService;
 
     @Autowired
-    public UsersController(UserService userService) {
+    public UsersController(UserService userService, TransactionService transactionService) {
         this.userService = userService;
+        this.transactionService = transactionService;
     }
 
     @GetMapping("/welcome")
@@ -49,6 +54,19 @@ public class UsersController {
         }
     }
 
+    @GetMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<Users> getUserById (
+            @PathVariable(name = "id") Long id
+    ) {
+        if(userService.getLoggedInUser(id) != null) {
+            return new ResponseEntity<>(userService.getLoggedInUser(id), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
     @GetMapping("/logout/{id}")
     @ResponseBody
     public ResponseEntity logout(
@@ -69,6 +87,5 @@ public class UsersController {
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         }
     }
-
 
 }

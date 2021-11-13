@@ -17,7 +17,7 @@ public class BankAccountsController {
         this.bankAccountService = bankAccountService;
     }
 
-    @PostMapping("/create_account{admin_id}")
+    @PostMapping("/create_account/{admin_id}")
     public ResponseEntity<Users> createBankAccount(
             @PathVariable(name = "admin_id") Long adminId,
             @RequestParam(name = "username") String username

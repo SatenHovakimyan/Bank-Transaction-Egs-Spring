@@ -56,7 +56,7 @@ public class Users {
     private List<Transactions> transactions;
 
     @Column(name = "logged_in_status")
-    private Boolean loggedInStatus;
+    private Boolean loggedInStatus = false;
 
     public Users(String firstName, String lastName, Role role, String username, String password, int age,
                  LocalDate dateOfBirth, String email, LocalDate created_data, Set<BankAccounts> bankAccounts,
