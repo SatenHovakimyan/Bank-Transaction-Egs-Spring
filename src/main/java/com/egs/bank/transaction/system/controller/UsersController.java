@@ -1,15 +1,16 @@
-package com.egs.bank.transaction.spring.controller;
+package com.egs.bank.transaction.system.controller;
 
-import com.egs.bank.transaction.spring.entity.Transactions;
-import com.egs.bank.transaction.spring.entity.Users;
-import com.egs.bank.transaction.spring.service.impl.TransactionService;
-import com.egs.bank.transaction.spring.service.impl.UserService;
+import com.egs.bank.transaction.system.entity.Transactions;
+import com.egs.bank.transaction.system.entity.Users;
+import com.egs.bank.transaction.system.service.impl.TransactionService;
+import com.egs.bank.transaction.system.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.transaction.Transaction;
+import java.util.Set;
 
 
 @RestController
@@ -64,7 +65,6 @@ public class UsersController {
         } else {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
-
     }
 
     @GetMapping("/logout/{id}")
@@ -76,13 +76,25 @@ public class UsersController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("/change_role/{admin_id}")
+    @PostMapping("/change-role/{admin_id}")
     public ResponseEntity<Users> changeRole(
             @PathVariable(name = "admin_id") Long adminId,
             @RequestParam(name = "user_id") Long userId) {
         Users adminUser = userService.changeRole(adminId, userId);
         if (adminUser != null) {
             return new ResponseEntity<>(adminUser, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+        }
+    }
+
+    @GetMapping("/transaction-history/{user-id}")
+    public ResponseEntity<Set<Transactions>> getTransactionHistory(
+            @PathVariable(name = "user-id") Long userId
+    ) {
+        Set<Transactions> transactions = userService.getTransactionHistory(userId);
+        if(transactions != null) {
+            return new ResponseEntity<>(transactions, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         }

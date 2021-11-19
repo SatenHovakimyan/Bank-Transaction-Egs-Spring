@@ -1,20 +1,19 @@
-package com.egs.bank.transaction.spring.entity;
+package com.egs.bank.transaction.system.entity;
 
-import com.egs.bank.transaction.spring.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.egs.bank.transaction.system.enums.Role;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,15 +51,13 @@ public class Users {
     @OneToMany(mappedBy = "user")
     private Set<BankAccounts> bankAccounts;
 
-    @OneToMany(mappedBy = "user")
-    private List<Transactions> transactions;
 
     @Column(name = "logged_in_status")
     private Boolean loggedInStatus = false;
 
     public Users(String firstName, String lastName, Role role, String username, String password, int age,
-                 LocalDate dateOfBirth, String email, LocalDate created_data, Set<BankAccounts> bankAccounts,
-                 List<Transactions> transactions, Boolean loggedInStatus) {
+                 LocalDate dateOfBirth, String email, LocalDate created_data,
+                 Boolean loggedInStatus) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
@@ -70,8 +67,21 @@ public class Users {
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.created_data = created_data;
-        this.bankAccounts = bankAccounts;
-        this.transactions = transactions;
+        this.loggedInStatus = loggedInStatus;
+    }
+
+    public Users(Long id, String firstName, String lastName, Role role, String username, String password,
+                 int age, LocalDate dateOfBirth, String email, LocalDate created_data, Boolean loggedInStatus) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.username = username;
+        this.password = password;
+        this.age = age;
+        this.dateOfBirth = dateOfBirth;
+        this.email = email;
+        this.created_data = created_data;
         this.loggedInStatus = loggedInStatus;
     }
 }

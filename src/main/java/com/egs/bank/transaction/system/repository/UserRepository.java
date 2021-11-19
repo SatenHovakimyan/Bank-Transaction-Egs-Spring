@@ -1,13 +1,12 @@
-package com.egs.bank.transaction.spring.repository;
+package com.egs.bank.transaction.system.repository;
 
-import com.egs.bank.transaction.spring.entity.Users;
+import com.egs.bank.transaction.system.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<Users, Long> {

@@ -1,14 +1,14 @@
-package com.egs.bank.transaction.spring.controller;
+package com.egs.bank.transaction.system.controller;
 
-import com.egs.bank.transaction.spring.entity.Users;
-import com.egs.bank.transaction.spring.service.impl.BankAccountService;
+import com.egs.bank.transaction.system.entity.BankAccounts;
+import com.egs.bank.transaction.system.service.impl.BankAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/bank_accounts")
+@RequestMapping("/bank-accounts")
 public class BankAccountsController {
     private final BankAccountService bankAccountService;
 
@@ -17,17 +17,17 @@ public class BankAccountsController {
         this.bankAccountService = bankAccountService;
     }
 
-    @PostMapping("/create_account/{admin_id}")
-    public ResponseEntity<Users> createBankAccount(
+    @PostMapping("/create/{admin_id}")
+    @ResponseBody
+    public ResponseEntity createBankAccount(
             @PathVariable(name = "admin_id") Long adminId,
             @RequestParam(name = "username") String username
     ) {
-        if (bankAccountService.createBankAccount(adminId, username) != null) {
-            return new ResponseEntity<>(
-                    bankAccountService.createBankAccount(adminId, username),
-                    HttpStatus.CREATED);
+        BankAccounts bankAccount = bankAccountService.createBankAccount(adminId, username);
+        if(bankAccount != null) {
+            return  ResponseEntity.ok(HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+            return ResponseEntity.ok(HttpStatus.CONFLICT);
         }
     }
 }

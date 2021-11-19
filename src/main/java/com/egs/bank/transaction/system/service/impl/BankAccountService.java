@@ -1,12 +1,13 @@
-package com.egs.bank.transaction.spring.service.impl;
+package com.egs.bank.transaction.system.service.impl;
 
-import com.egs.bank.transaction.spring.entity.BankAccounts;
-import com.egs.bank.transaction.spring.entity.Users;
-import com.egs.bank.transaction.spring.repository.BankAccountRepository;
-import com.egs.bank.transaction.spring.repository.TransactionRepository;
+import com.egs.bank.transaction.system.entity.BankAccounts;
+import com.egs.bank.transaction.system.entity.Users;
+import com.egs.bank.transaction.system.repository.BankAccountRepository;
+import com.egs.bank.transaction.system.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -23,40 +24,44 @@ public class BankAccountService {
         this.transactionRepository = transactionRepository;
     }
 
-    public Users createBankAccount(Long adminId, String username) {
-        if( userService.isLoggedIn(adminId) && userService.hasAdminRole(adminId)
+    public BankAccounts createBankAccount(Long adminId, String username) {
+        if (userService.isLoggedIn(adminId) && userService.hasAdminRole(adminId)
                 && userService.isRegisteredUser(username)) {
             BankAccounts bankAccount = new BankAccounts();
             bankAccount.setCreatedDate(LocalDate.now());
             bankAccount.setBalance(0L);
-            bankAccount.setUser(userService.getUserByUsername(username));
+            Users userOfBankAccount = userService.getUserByUsername(username);
+            bankAccount.setUser(userOfBankAccount);
             bankAccountRepository.save(bankAccount);
-            return userService.getUserById(adminId);
+            return bankAccount;
         } else {
             return null;
         }
     }
 
     public boolean validBankAccountId(Long id) {
-        if(bankAccountRepository.findById(id).get() != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return bankAccountRepository.findById(id).isPresent();
     }
 
     public BankAccounts getBankAccount(Long bankAccountId) {
-        return bankAccountRepository.findById(bankAccountId).get();
+        return bankAccountRepository.findById(bankAccountId).orElseThrow(EntityNotFoundException::new);
     }
 
     public void depositBalance(Long transactionAmount, UUID transactionId) {
-        BankAccounts bankAccount = transactionRepository.findById(transactionId).get().getBankAccount();
+
+        BankAccounts bankAccount = transactionRepository.
+                findById(transactionId).
+                orElseThrow(EntityNotFoundException::new).
+                getBankAccount();
         Long currentBalance = bankAccount.getBalance();
         bankAccount.setBalance(currentBalance + transactionAmount);
     }
 
     public void withdrawalBalance(Long transactionAmount, UUID transactionId) {
-        BankAccounts bankAccount = transactionRepository.findById(transactionId).get().getBankAccount();
+        BankAccounts bankAccount = transactionRepository.
+                findById(transactionId).
+                orElseThrow(EntityNotFoundException::new).
+                getBankAccount();
         Long currentBalance = bankAccount.getBalance();
         bankAccount.setBalance(currentBalance - transactionAmount);
     }

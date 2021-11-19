@@ -1,10 +1,11 @@
-package com.egs.bank.transaction.spring.entity;
+package com.egs.bank.transaction.system.entity;
 
-import com.egs.bank.transaction.spring.enums.TransactionStatus;
-import com.egs.bank.transaction.spring.enums.TransactionType;
-import lombok.AllArgsConstructor;
+import com.egs.bank.transaction.system.enums.TransactionStatus;
+import com.egs.bank.transaction.system.enums.TransactionType;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -13,8 +14,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "transaction")
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
 public class Transactions {
     @Id
@@ -44,14 +45,8 @@ public class Transactions {
     @JoinColumn(name = "bank_account_id")
     private BankAccounts bankAccount;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
-
-    public Transactions(
-            TransactionType transactionType, TransactionStatus transactionStatus,
-            LocalDateTime createdData, Long transactionAmount, BankAccounts bankAccount
-    ) {
+    public Transactions(TransactionType transactionType, TransactionStatus transactionStatus,
+                        LocalDateTime createdData, Long transactionAmount, BankAccounts bankAccount) {
         this.transactionType = transactionType;
         this.transactionStatus = transactionStatus;
         this.createdData = createdData;

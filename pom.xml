@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.egs.bank.transaction</groupId>
-    <artifactId>bank_transaction_spring</artifactId>
+    <artifactId>bank_transaction_system</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring_demo</name>
-    <description>bank_transaction_spring</description>
+    <description>bank_transaction_system</description>
     <properties>
         <java.version>17</java.version>
     </properties>

@@ -1,4 +1,4 @@
-package com.egs.bank.transaction.spring;
+package com.egs.bank.transaction.system;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package com.egs.bank.transaction.spring.enums;
+package com.egs.bank.transaction.system.enums;
 
 import java.util.List;
 
@@ -27,9 +27,9 @@ public enum TransactionStatus {
         }
     },
 
-    CLOSED(5) {
+    CANCELED(5) {
         public String toString() {
-            return "id: 5, type: CLOSED";
+            return "id: 5, type: CANCELED";
         }
     };
 

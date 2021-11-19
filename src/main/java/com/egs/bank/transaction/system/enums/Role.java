@@ -1,4 +1,4 @@
-package com.egs.bank.transaction.spring.enums;
+package com.egs.bank.transaction.system.enums;
 
 import java.util.List;
 

@@ -1,8 +1,6 @@
-package com.egs.bank.transaction.spring.entity;
+package com.egs.bank.transaction.system.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,9 +8,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "bank_account")
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class BankAccounts {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,10 +29,9 @@ public class BankAccounts {
     @OneToMany(mappedBy = "bankAccount")
     private List<Transactions> transactions;
 
-    public BankAccounts(Long balance, LocalDate createdDate, Users user, List<Transactions> transactions) {
+    public BankAccounts(Long balance, LocalDate createdDate, Users user) {
         this.balance = balance;
         this.createdDate = createdDate;
         this.user = user;
-        this.transactions = transactions;
     }
 }
